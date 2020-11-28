@@ -9,6 +9,7 @@
 	cd 02_movie_searcher && go run app.go 
 02_api_test:
 	cd 02_movie_searcher/files && sh http_sample.sh
+	cd 02_movie_searcher/files && go run app.go
 03_run:
 	go run 03_code_refactor/app.go
 04_run:
