@@ -27,6 +27,7 @@ func (r RepositoryMovieSearchLog) CreateMovieLogQuery(searchRes entity.SearchRes
 			log.Error(log.Fields{
 				"searchRes": fmt.Sprintf("%+v", searchRes),
 			}, err)
+			return err
 		}
 	}
 

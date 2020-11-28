@@ -1,0 +1,15 @@
+syntax = "proto3";
+package moviesearch;
+
+message MessageRequest {
+  string searchword = 1; // Keyword for the search
+  int64 pagination = 2; // Pagination of the search
+}
+
+message MessageResponse {
+  string response = 1;
+}
+
+service MovieSearchService {
+  rpc GetAndSaveMoviesBySearch(MessageRequest) returns (MessageResponse) {}
+}

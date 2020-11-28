@@ -1,7 +1,13 @@
 package main
 
 import (
+	"fmt"
+	"os"
+	"os/signal"
+	"syscall"
+
 	"github.com/pikomonde/i-view-stockbit/02_movie_searcher/config"
+	"github.com/pikomonde/i-view-stockbit/02_movie_searcher/delivery"
 	"github.com/pikomonde/i-view-stockbit/02_movie_searcher/repository"
 	servMovs "github.com/pikomonde/i-view-stockbit/02_movie_searcher/service/moviesearch"
 )
@@ -26,5 +32,15 @@ func main() {
 	}
 
 	// Delivery
+	delv := delivery.New(delivery.Opt{
+		ServiceMovieSearch: sMovs,
+	})
+	delv.Start()
 
+	term := make(chan os.Signal)
+	signal.Notify(term, syscall.SIGINT, syscall.SIGTERM)
+	select {
+	case <-term:
+		fmt.Println("Exiting gracefully...")
+	}
 }

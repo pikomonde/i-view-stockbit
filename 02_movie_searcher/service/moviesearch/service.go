@@ -5,8 +5,8 @@ import (
 	"github.com/pikomonde/i-view-stockbit/02_movie_searcher/repository"
 )
 
-// ServiceOMDB contains services for OMDB
-type ServiceOMDB struct {
+// ServiceMovieSearch contains services for OMDB
+type ServiceMovieSearch struct {
 	Config                   config.Config
 	RepositoryMovieSearch    repository.MovieSearchRepository
 	RepositoryMovieSearchLog repository.MovieSearchLogRepository
@@ -19,9 +19,9 @@ type Opt struct {
 	RepositoryMovieSearchLog repository.MovieSearchLogRepository
 }
 
-// New returns ServiceOMDB
-func New(opt Opt) *ServiceOMDB {
-	return &ServiceOMDB{
+// New returns ServiceMovieSearch
+func New(opt Opt) *ServiceMovieSearch {
+	return &ServiceMovieSearch{
 		Config:                   opt.Config,
 		RepositoryMovieSearch:    opt.RepositoryMovieSearch,
 		RepositoryMovieSearchLog: opt.RepositoryMovieSearchLog,

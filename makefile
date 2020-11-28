@@ -1,11 +1,15 @@
-run_01:
+01_run:
 	mysql -u root -ppass < 01_simple_database_querying/mysql.sql
-init_02:
+02_init:
 	mysql -u root -ppass < 02_movie_searcher/files/int_mysql.sql
 	cd 02_movie_searcher && go mod vendor
-run_02:
+02_build_proto:
+	cd 02_movie_searcher/delivery/grpchandler && protoc --go_out=plugins=grpc:moviesearch moviesearch.proto
+02_run:
 	cd 02_movie_searcher && go run app.go 
-run_03:
+02_api_test:
+	cd 02_movie_searcher/files && sh http_sample.sh
+03_run:
 	go run 03_code_refactor/app.go
-run_04:
+04_run:
 	go run 04_logic_anagram/app.go
