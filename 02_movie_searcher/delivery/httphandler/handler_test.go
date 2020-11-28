@@ -1,41 +1,36 @@
-package main
+package httphandler_test
 
 import (
-	"fmt"
-	"os"
-	"os/signal"
-	"syscall"
+	"testing"
+	"time"
 
 	"github.com/pikomonde/i-view-stockbit/02_movie_searcher/config"
-	"github.com/pikomonde/i-view-stockbit/02_movie_searcher/delivery"
+	"github.com/pikomonde/i-view-stockbit/02_movie_searcher/delivery/httphandler"
 	"github.com/pikomonde/i-view-stockbit/02_movie_searcher/repository"
 	servMovs "github.com/pikomonde/i-view-stockbit/02_movie_searcher/service/moviesearch"
 )
 
-func main() {
+func TestStart(t *testing.T) {
 	cfg := config.New()
-
-	// Repository
 	rMovs := repository.NewHTTPAPIMovieSearch(cfg)
 	rMovl := repository.NewMySQLMovieSearchLog(cfg)
-
-	// Service
 	sMovs := servMovs.New(servMovs.Opt{
 		Config:                   cfg,
 		RepositoryMovieSearch:    rMovs,
 		RepositoryMovieSearchLog: rMovl,
 	})
 
-	// Delivery
-	delv := delivery.New(delivery.Opt{
+	// New & Start
+	hh := httphandler.New(httphandler.Opt{
 		ServiceMovieSearch: sMovs,
 	})
-	delv.Start()
+	hh.Start()
 
-	term := make(chan os.Signal)
-	signal.Notify(term, syscall.SIGINT, syscall.SIGTERM)
-	select {
-	case <-term:
-		fmt.Println("Exiting gracefully...")
-	}
+	time.Sleep(500 * time.Millisecond)
+
+	// New & Start (error)
+	hhh := httphandler.New(httphandler.Opt{
+		ServiceMovieSearch: sMovs,
+	})
+	hhh.Start()
 }

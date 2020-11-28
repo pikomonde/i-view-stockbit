@@ -7,6 +7,8 @@
 	cd 02_movie_searcher/delivery/grpchandler && protoc --go_out=plugins=grpc:moviesearch moviesearch.proto
 02_run:
 	cd 02_movie_searcher && go run app.go 
+02_unit_test:
+	cd 02_movie_searcher && go test ./... -coverprofile cover.out && go tool cover -func cover.out
 02_api_test:
 	cd 02_movie_searcher/files && sh http_sample.sh
 	cd 02_movie_searcher/files && go run app.go

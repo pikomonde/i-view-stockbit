@@ -1,10 +1,7 @@
-package main
+package delivery_test
 
 import (
-	"fmt"
-	"os"
-	"os/signal"
-	"syscall"
+	"testing"
 
 	"github.com/pikomonde/i-view-stockbit/02_movie_searcher/config"
 	"github.com/pikomonde/i-view-stockbit/02_movie_searcher/delivery"
@@ -12,30 +9,19 @@ import (
 	servMovs "github.com/pikomonde/i-view-stockbit/02_movie_searcher/service/moviesearch"
 )
 
-func main() {
+func TestDelivery(t *testing.T) {
 	cfg := config.New()
-
-	// Repository
 	rMovs := repository.NewHTTPAPIMovieSearch(cfg)
 	rMovl := repository.NewMySQLMovieSearchLog(cfg)
-
-	// Service
 	sMovs := servMovs.New(servMovs.Opt{
 		Config:                   cfg,
 		RepositoryMovieSearch:    rMovs,
 		RepositoryMovieSearchLog: rMovl,
 	})
 
-	// Delivery
+	// New & Start
 	delv := delivery.New(delivery.Opt{
 		ServiceMovieSearch: sMovs,
 	})
 	delv.Start()
-
-	term := make(chan os.Signal)
-	signal.Notify(term, syscall.SIGINT, syscall.SIGTERM)
-	select {
-	case <-term:
-		fmt.Println("Exiting gracefully...")
-	}
 }

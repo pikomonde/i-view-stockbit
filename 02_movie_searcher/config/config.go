@@ -20,10 +20,8 @@ type Config struct {
 // New is used to get Config
 func New() Config {
 	// Initialize MySQL Client
-	mysqlCli, err := sqlx.Connect("mysql", "root:pass@/i_view_stockbit_omdb")
-	if err != nil {
-		logrus.Errorln(err)
-	}
+	// TODO: move dataSourceName to file config
+	mysqlCli := GetMySQLCli("root:pass@/i_view_stockbit_omdb")
 
 	// Initialize HTTP Client
 	httpCli := &http.Client{
@@ -35,4 +33,12 @@ func New() Config {
 		HTTPCli:    httpCli,
 		MySQLCli:   mysqlCli,
 	}
+}
+
+func GetMySQLCli(dataSourceName string) *sqlx.DB {
+	mysqlCli, err := sqlx.Connect("mysql", dataSourceName)
+	if err != nil {
+		logrus.Panicln(err)
+	}
+	return mysqlCli
 }
